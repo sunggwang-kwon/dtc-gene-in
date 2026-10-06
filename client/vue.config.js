@@ -1,4 +1,20 @@
 const { defineConfig } = require('@vue/cli-service')
+const fs = require('fs')
+
+function getProxyTarget() {
+  if (process.env.DEV_PROXY_TARGET) {
+    return process.env.DEV_PROXY_TARGET
+  }
+  if (fs.existsSync('./.deploy.env')) {
+    const envContent = fs.readFileSync('./.deploy.env', 'utf-8')
+    const match = envContent.match(/REMOTE_HOST=["']?([^"'\r\n]+)["']?/)
+    if (match && match[1]) {
+      return `http://${match[1]}`
+    }
+  }
+  return 'http://localhost'
+}
+
 module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
@@ -13,9 +29,9 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/lookup/proxy': {
-        target: 'http://lims.geneinsight.com',
+        target: getProxyTarget(),
         changeOrigin: true,
-        pathRewrite: { '^/lookup/proxy': '' },
+        pathRewrite: { '^/lookup/proxy': '/lookup' },
         secure: false,
         logLevel: 'debug'
       },
