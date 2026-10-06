@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
   ],
-  publicPath: "/",
+  publicPath: process.env.NODE_ENV === 'production' ? '/lookup/' : '/',
   configureWebpack: {
     resolve: {
       extensions: ['*', '.js', '.vue', '.json'],
