@@ -1,0 +1,17 @@
+# Dependencies and build outputs
+node_modules
+client/node_modules
+client/dist
+client/.deploy.env
+client/.deploy.env.local
+!.deploy.env.default
+!client/.deploy.env.default
+
+# Logs
+*.log
+logs
+
+# Editor
+.vscode
+.idea
+.DS_Store

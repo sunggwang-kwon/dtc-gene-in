@@ -1,0 +1,108 @@
+.v-text-field .v-input__control .v-input__slot {
+  min-height: auto !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 2px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-top: 3px !important;
+}
+.v-input__append-inner{
+  margin-top:0px !important;
+}
+.v-select .v-input__icon{
+  margin-top:6px !important;
+}
+.v-btn{
+  border-radius: 2px !important;
+}
+.v-list--nav .v-list-item, .v-list--nav .v-list-item:before{
+  border-radius: 1px !important;
+}
+::-webkit-input-placeholder {
+  font-style: italic;
+}
+:-moz-placeholder {
+  font-style: italic;  
+}
+::-moz-placeholder {
+  font-style: italic;  
+}
+:-ms-input-placeholder {  
+  font-style: italic; 
+}
+.content-background{
+  background-color:#f5f9fa;
+}
+.table-layout{
+  overflow:auto;
+}
+table{
+  background-color:white;
+  width:100%;
+  border-collapse:collapse;
+  border:1px solid rgba(0,0,0,0.12);
+}
+table > thead > tr > th{
+  font-weight:100;
+  font-size:11pt;
+  background-color:#e9eff5;
+  border:1px solid rgba(0,0,0,0.12);
+  /*
+  position: sticky;
+  top: 0;
+  */
+  text-align:left;
+  /*
+  border-left:1px solid rgba(0,0,0,0.1);
+  z-index:1;
+  */
+}
+/*
+table > tbody > tr{
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+*/
+table > tbody > tr > td{
+  font-size:11pt;
+  border:1px solid rgba(0,0,0,0.12);
+  /*
+  border-left:1px solid rgba(0,0,0,0.1);
+  */
+}
+table > tbody > tr:hover{
+  background-color:rgba(0,0,0,0.01);
+}
+.v-input--selection-controls__input{
+  margin: 0 !important;
+}
+.v-text-field__details{
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.v-select.v-input--dense .v-select__selection--comma{
+  margin: 3px 4px 3px 0 !important;
+}
+.cursor-pointer :hover{
+  cursor:pointer;
+}
+.v-input__prepend-outer{
+  margin-top:2px !important;
+}
+
+@page{
+  size:A4;
+  margin:10mm;
+  align-content: center;
+}
+@media print{
+  html, body{
+      width: 211mm;
+      height:297mm;
+  }
+  td{
+      font-size:10pt;
+      height:min-content;
+  }
+}

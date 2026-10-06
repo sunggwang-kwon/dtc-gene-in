@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>지니인사이트 유전자 검사 결과 조회</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <style>
+      body{
+        /*모바일 환경 중앙 배치*/
+        height: 100vh;
+        height: calc(var(--vh, 1vh)*100);
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <script>
+      //모바일 환경 중앙 배치
+      let customVH = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', customVH + 'px')
+      window.addEventListener('resize', () => {
+        let customVH = window.innerHeight * 0.01
+        document.documentElement.style.setProperty(
+          '--vh',
+          customVH + 'px',
+        )
+      })
+    </script>
+  </body>
+</html>
