@@ -29,9 +29,13 @@
 
 `dtc-gene-in-admin`과 일관된 지니인사이트 공식 디자인 아이덴티티를 적용합니다.
 
-- **브랜드 로고**:
+- **브랜드 로고 및 타이틀**:
+  - 상단 앱바 타이틀: 영문 브랜드 타이틀 **`GeneInsight`** (딥 블랙 `#222222`, `letter-spacing: 0.5px`, `user-select: none`, 상단 앱바 로고 미사용)
   - 메인 로고: `@/assets/geni-in-logo.svg` (로그인 카드 중앙)
-  - 심볼 로고: `@/assets/symbol-logo.svg` (상단 앱바 좌측 및 파비콘)
+  - 파비콘: `public/favicon.svg`, `@/assets/symbol-logo.svg`
+- **상단 앱바 (Header)**:
+  - 배경색: `#F0F5FE` (소프트 파스텔 블루, 하단 테두리 없음)
+  - 로그아웃 버튼: `.header-logout-btn` 다크 스타일 (`#333333` 배경/보더, 호버 시 `#222222`)
 - **컬러 팔레트**:
   - Primary: `#0C67DF` (지니인사이트 메인 블루)
   - Accent: `#21b4e9` (시안 포인트)
@@ -39,10 +43,11 @@
   - Background: 부드러운 그라데이션 (`linear-gradient(rgb(255, 255, 255), rgb(245, 249, 250))`)
 - **타이포그래피**:
   - Pretendard 폰트 전역 적용 (`CDN` 연동 및 `variable.scss` 폴백 설정)
-- **컴포넌트 스타일링**:
-  - 카드: `outlined`, 모던 보더 반경 (`border-radius: 12px`), 은은한 그림자 (`box-shadow: 0 4px 12px rgba(0,0,0,0.05)`)
-  - 인풋: `outlined`, `dense`, 깔끔한 라운드 처리 (`border-radius: 6px`)
-  - 버튼: Vuetify 기본 그림자 제거 (`:elevation="0"`), `font-weight: 600`
+- **컴포넌트 스타일링 (dtc-gene-in-admin 통일 규격)**:
+  - 전역 Dense 규격: 버튼 높이 28px/폰트 13px/굵기 700, 텍스트 인풋/셀렉트 최소 높이 32px/폰트 13px
+  - 카드: Flat 카드 (`box-shadow: none !important`), 보더 반경 8px, 액션 구분선 및 세부 슬롯 스타일링
+  - 데이터 테이블: 헤더 배경 `#f1f3f4`, 행 호버 `#f5f7fa`, 선택 행 `#eef4fc`, 유틸리티 셀 클래스 제공
+  - 기타 UI: 탭 텍스트 강조, 아웃라인 칩, 다이얼로그 라운드 12px, flat 페이지네이션, `.status` 인디케이터 유틸리티
   - 스피너: 지니인사이트 브랜드 블루 기반의 모던 원형 인디케이터
 
 ---
