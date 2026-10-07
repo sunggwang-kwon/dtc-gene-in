@@ -1,14 +1,13 @@
 <template>
   <v-app>
-    <v-app-bar app dense color="primary" dark :elevation="0">
+    <v-app-bar app dense color="#F0F5FE" :elevation="0">
       <v-row align="center" no-gutters>
         <v-col cols="auto" class="d-flex align-center cursor-pointer" @click="$router.push('/')">
-          <v-img src="@/assets/symbol-logo.svg" width="28" height="28" contain class="mr-2"></v-img>
-          <span style="font-weight:700; font-size:16px; color:#ffffff; letter-spacing: -0.3px;">지니인사이트</span>
+          <span class="font-weight-bold text-subtitle-1" style="letter-spacing: 0.5px; color: #222222; user-select: none;">GeneInsight</span>
         </v-col>
         <v-spacer></v-spacer>
         <v-col v-if="$session.has('jwt')" cols="auto">
-          <v-btn @click="logout" small outlined color="white" :elevation="0">{{ $t('app.logout') }}</v-btn>
+          <v-btn @click="logout" outlined class="header-logout-btn" :elevation="0">{{ $t('app.logout') }}</v-btn>
         </v-col>
       </v-row>
     </v-app-bar>

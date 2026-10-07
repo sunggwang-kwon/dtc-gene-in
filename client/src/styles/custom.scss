@@ -70,14 +70,41 @@ a {
 // APP BAR (Header)
 // ========================================
 .v-app-bar {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-bottom: none !important;
+  border: none !important;
   box-shadow: none !important;
 
+  // Primary colored dark app bar (옵션)
   &.theme--dark,
   &.primary {
     background-color: var(--color-primary) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
     color: #ffffff !important;
+  }
+
+  .v-btn.header-logout-btn {
+    border-color: #333333 !important;
+    color: #ffffff !important;
+    background-color: #333333 !important;
+    font-size: 12px !important;
+    letter-spacing: normal !important;
+    transition: all 0.2s ease !important;
+
+    &::before {
+      display: none !important;
+    }
+
+    &:hover {
+      background-color: #222222 !important;
+      border-color: #222222 !important;
+      color: #ffffff !important;
+      opacity: 1;
+    }
+
+    &:active {
+      background-color: #111111 !important;
+      opacity: 0.9;
+    }
   }
 }
 
@@ -86,10 +113,19 @@ a {
 // ========================================
 .v-btn {
   text-transform: none !important;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   letter-spacing: normal !important;
   border-radius: var(--radius-md, 6px) !important;
 
+  // 전역 dense 처리 (아이콘 버튼 제외)
+  &:not(.v-btn--icon):not(.v-btn--fab):not(.v-size--x-large):not(.v-size--large) {
+    height: 28px !important;
+    min-height: 28px !important;
+    font-size: 13px !important;
+    padding: 0 12px !important;
+  }
+
+  // Solid dark buttons
   &.theme--dark:not(.v-btn--outlined):not(.v-btn--text):not(.v-btn--icon):not(.btn-inactive):not(.v-btn--disabled):not(:disabled) {
     background-color: var(--color-primary) !important;
     border-color: var(--color-primary) !important;
@@ -101,9 +137,39 @@ a {
     }
   }
 
+  // Inactive state button
+  &.btn-inactive {
+    background-color: #e0e0e0 !important;
+    border-color: #e0e0e0 !important;
+    color: #757575 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+
+    * {
+      color: #757575 !important;
+    }
+
+    &:hover {
+      background-color: #e0e0e0 !important;
+      border-color: #e0e0e0 !important;
+    }
+  }
+
   &.theme--dark.grey {
     background-color: #9e9e9e !important;
     border-color: #9e9e9e !important;
+  }
+  &.theme--dark.error {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+  }
+
+  &.v-btn--outlined {
+    border-color: var(--color-border-dark);
+
+    &:hover:not(.header-logout-btn) {
+      background-color: var(--color-bg-hover) !important;
+    }
   }
 }
 
@@ -112,13 +178,113 @@ a {
 // ========================================
 .v-card {
   border: 1px solid var(--color-border) !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
   border-radius: 8px !important;
-  background-color: #ffffff !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     border-color: var(--color-border-dark) !important;
+  }
+
+  &--link:hover,
+  &[role="button"]:hover {
+    box-shadow: var(--shadow-md) !important;
+  }
+
+  .v-card__title {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    word-break: keep-all;
+  }
+
+  .v-card__subtitle {
+    color: var(--color-text-tertiary);
+  }
+
+  .v-card__text {
+    padding: 24px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+  }
+
+  .v-card__title + .v-card__text {
+    padding-top: 12px;
+  }
+
+  .v-card__actions {
+    border-top: 1px solid var(--color-border-light);
+    padding: 12px 20px;
+  }
+}
+
+// ========================================
+// DATA TABLE
+// ========================================
+.v-data-table {
+  thead th {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text-tertiary) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background-color: #f1f3f4 !important;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--color-border) !important;
+  }
+
+  tbody td {
+    color: var(--color-text-secondary);
+    border-bottom-color: var(--color-border-light) !important;
+  }
+
+  tbody tr:hover {
+    background-color: var(--color-bg-hover) !important;
+  }
+
+  tbody tr.v-data-table__selected {
+    background-color: var(--color-primary-lighter) !important;
+  }
+
+  &.striped tbody tr:nth-child(even) {
+    background-color: var(--color-bg-secondary);
+    &:hover {
+      background-color: var(--color-bg-hover) !important;
+    }
+  }
+
+  thead th.sortable .v-icon {
+    font-size: 14px !important;
+    color: var(--color-text-muted);
+  }
+
+  thead th.sortable.active {
+    color: var(--color-primary) !important;
+    .v-icon {
+      color: var(--color-primary) !important;
+    }
+  }
+
+  .v-data-footer {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cell--primary {
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .cell--muted {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+  .cell--link {
+    color: var(--color-primary);
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+  }
+  .cell--number {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    font-weight: 500;
   }
 }
 
@@ -149,6 +315,220 @@ a {
 .v-text-field__details {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+// Error state
+.v-text-field.error--text {
+  fieldset {
+    border-color: #ef4444 !important;
+  }
+}
+
+// 전역 dense 처리 — Text Fields & Select
+.v-text-field,
+.v-select {
+  .v-input__slot {
+    min-height: 32px !important;
+    font-size: 13px !important;
+    background-color: #ffffff !important;
+  }
+
+  .v-input__append-inner,
+  .v-input__prepend-inner {
+    margin-top: 4px !important;
+  }
+
+  .v-label {
+    font-size: 13px !important;
+    top: 6px !important;
+  }
+
+  &.v-input--is-label-active .v-label,
+  &.v-input--is-focused .v-label {
+    top: 0 !important;
+  }
+
+  input {
+    font-size: 13px !important;
+    padding: 4px 0 !important;
+  }
+
+  .v-select__selections {
+    font-size: 13px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+  }
+}
+
+// 전역 dense 처리 — Checkbox & Radio
+.v-input--checkbox,
+.v-input--radio-group {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+
+  .v-input__slot {
+    min-height: auto !important;
+  }
+
+  .v-icon {
+    font-size: 20px !important;
+  }
+
+  .v-label {
+    font-size: 13px !important;
+  }
+}
+
+.v-radio {
+  .v-icon {
+    font-size: 20px !important;
+  }
+  .v-label {
+    font-size: 13px !important;
+  }
+}
+
+// Select dropdown
+.v-select-list .v-list-item {
+  min-height: 32px;
+  font-size: 13px;
+}
+
+// ========================================
+// TABS
+// ========================================
+.v-tabs {
+  .v-tab {
+    text-transform: none !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    color: var(--color-text-tertiary);
+
+    &--active {
+      color: var(--color-primary);
+      font-weight: 600 !important;
+    }
+  }
+
+  .v-tabs-slider {
+    height: 2px;
+  }
+}
+
+// ========================================
+// CHIPS
+// ========================================
+.v-chip {
+  font-weight: 500;
+
+  &.v-chip--outlined {
+    border-color: var(--color-border);
+  }
+}
+
+// ========================================
+// ALERTS
+// ========================================
+.v-alert {
+  border-radius: 6px !important;
+
+  .v-alert__content {
+    line-height: 1.65;
+  }
+}
+
+// ========================================
+// DIALOG
+// ========================================
+.v-dialog {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-md);
+
+  .v-card {
+    border: none !important;
+  }
+
+  .v-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-border-light);
+    padding: 20px 24px;
+  }
+
+  .v-card__text {
+    padding: 24px;
+  }
+
+  .v-card__actions {
+    border-top: 1px solid var(--color-border-light);
+    padding: 16px 24px;
+  }
+}
+
+// ========================================
+// TOOLTIP
+// ========================================
+.v-tooltip__content {
+  background-color: #1f2937 !important;
+  border-radius: 4px !important;
+  font-size: 0.75rem !important;
+  font-weight: 500;
+  padding: 6px 10px !important;
+  box-shadow: none !important;
+}
+
+// ========================================
+// PAGINATION
+// ========================================
+.v-pagination {
+  .v-pagination__item {
+    font-weight: 500;
+    border-radius: 6px;
+    min-width: 36px;
+    height: 36px;
+    box-shadow: none;
+
+    &--active {
+      background-color: var(--color-primary) !important;
+      color: #fff !important;
+    }
+  }
+
+  .v-pagination__navigation {
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+
+    &:hover {
+      background-color: var(--color-bg-hover);
+    }
+  }
+}
+
+// ========================================
+// STATUS INDICATOR (Custom utility)
+// ========================================
+// Usage: <span class="status status--active">활성</span>
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &--active::before  { background-color: #22c55e; }
+  &--inactive::before { background-color: var(--color-text-muted); }
+  &--warning::before  { background-color: #f59e0b; }
+  &--error::before    { background-color: #ef4444; }
+  &--info::before     { background-color: var(--color-primary); }
 }
 
 // ========================================
