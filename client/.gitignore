@@ -1,6 +1,9 @@
-# Logs
+# Logs & Process IDs
 logs
 *.log
+*.pid
+serve.log
+serve.pid
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

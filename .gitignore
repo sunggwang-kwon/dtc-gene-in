@@ -7,8 +7,11 @@ client/.deploy.env.local
 !.deploy.env.default
 !client/.deploy.env.default
 
-# Logs
+# Logs & Process IDs
 *.log
+*.pid
+serve.log
+serve.pid
 logs
 
 # Editor
