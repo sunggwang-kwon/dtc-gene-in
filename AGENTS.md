@@ -21,7 +21,7 @@
 - **패키지 매니저**: **`pnpm` 전용** (`npm` 사용 절대 금지)
 - **배포 환경**:
   - 웹 서버: Apache 2.4 (SFTP Smart Sync 배포)
-  - 배포 설정: `client/.deploy.env` 참조 (SFTP 접속 호스트, 포트, 계정 정보)
+  - 배포 설정: Google Cloud Secret Manager(`sgkwon-vault`)의 `DTC_GENE_SFTP_*` 자격증명을 공용 헬퍼 스크립트(`/home/sgkwon/scripts/get-gcp-secret.mjs`)를 통해 실시간 주입받아 배포 수행 (로컬 `.deploy.env` 파일 제거됨)
 
 ---
 
@@ -56,7 +56,9 @@
 
 ### 3.1. 배포 및 원격 접속 제한
 1. **Deploy 절대 금지 원칙**: 사용자의 직접적이고 명시적인 지시(`"배포해"`, `"배포 진행"` 등)가 있기 전까지 배포 스크립트 실행(`bash deploy.sh`, `pnpm run deploy`)은 절대 금지합니다.
-2. **외부 서버 SSH 접속 금지**: 사용자의 사전 승인 없이 원격 서버 SSH 직접 접속을 시도하지 않습니다.
+2. **원격 서버 소스코드 참조 원칙**:
+   - **서버 최신 코드 동기화**: 백엔드 소스코드 확인 및 수정사항 여부 점검 시 `/home/sgkwon/git/.server/sync-dtc-gene.sh`를 1회 실행하여 원격 서버의 최신 코드를 즉시 로컬로 동기화한 후 조회합니다.
+
 
 ### 3.2. 패키지 매니저 규칙
 - 반드시 **`pnpm`**만 사용합니다.

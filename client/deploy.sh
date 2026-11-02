@@ -43,20 +43,36 @@ else
 fi
 echo -e "${CYAN}================================================================${RESET}"
 
-# 1. Check .deploy.env file
-if [ ! -f "$ENV_FILE" ]; then
-  echo -e "${RED}❌ 설정 파일(.deploy.env)을 찾을 수 없습니다!${RESET}"
-  echo -e "   먼저 아래 파일에 원격 서버 접속 정보를 입력해 주세요:"
-  echo -e "   👉 ${YELLOW}$ENV_FILE${RESET}\n"
-  echo -e "   (.deploy.env.default 파일을 복사하여 생성할 수 있습니다)"
+# 1. Load variables (.deploy.env fallback + Secret Manager 1st priority)
+if [ -f "$ENV_FILE" ]; then
+  source "$ENV_FILE"
+fi
+
+GET_SECRET_HELPER="/home/sgkwon/scripts/get-gcp-secret.mjs"
+if [ -x "$GET_SECRET_HELPER" ]; then
+  SM_PASS=$("$GET_SECRET_HELPER" DTC_GENE_SFTP_PASS 2>/dev/null || true)
+  if [ -n "$SM_PASS" ]; then
+    REMOTE_PASS="$SM_PASS"
+  fi
+  SM_HOST=$("$GET_SECRET_HELPER" DTC_GENE_SFTP_HOST 2>/dev/null || true)
+  if [ -n "$SM_HOST" ]; then
+    REMOTE_HOST="${SM_HOST%%:*}"
+    REMOTE_PORT="${SM_HOST##*:}"
+  fi
+  SM_USER=$("$GET_SECRET_HELPER" DTC_GENE_SFTP_USER 2>/dev/null || true)
+  if [ -n "$SM_USER" ]; then
+    REMOTE_USER="$SM_USER"
+  fi
+fi
+
+if [ -z "$REMOTE_PASS" ] || [ -z "$REMOTE_HOST" ]; then
+  echo -e "${RED}❌ 설정 파일(.deploy.env) 또는 Secret Manager 접속 정보를 찾을 수 없습니다!${RESET}"
   exit 1
 fi
 
-# Load variables
-source "$ENV_FILE"
-
 REMOTE_PROTO="${REMOTE_PROTO:-sftp}"
-REMOTE_PORT="${REMOTE_PORT:-22}"
+REMOTE_PORT="${REMOTE_PORT:-22022}"
+REMOTE_DIR="${REMOTE_DIR:-/var/www/html/lookup}"
 
 # 2. Check dist directory
 if [ ! -d "$SCRIPT_DIR/dist" ]; then
