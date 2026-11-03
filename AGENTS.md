@@ -117,16 +117,16 @@ dtc-gene-in/
 
 ### 5.1. 인증 및 세션 관리
 - **로그인 (`Login.vue`)**:
-  - 입력값: 바코드 번호(`patient_id`) + 고객 성명(`name`)
-  - API: `/server/common/login.php` (POST)
+  - 입력값: 바코드 번호(`patient_id`) + 고객 성명(`patient_name`)
+  - API: `/server/login.php` (POST)
   - 성공 시 세션 저장(`jwt`, `Patient_id`, `Name`, `Auth`) 후 `/progress` 라우트로 이동.
 - **세션 유지 및 자동 로그아웃 (`App.vue`)**:
   - 20분 주기로 토큰 재발급 API (`/server/common/reissuance_token.php`) 호출.
   - 60분 동안 사용자 인터랙션(클릭) 부재 시 자동 로그아웃 처리.
 
 ### 5.2. 접수일자 선택 및 진행상황 (`Progress.vue`)
-- API: `/server/patient/request_date.php`로 고객의 검사 접수일자 목록을 조회.
-- 접수일자 선택 시 `/server/patient/progress.php`를 통해 단계별 진행상태(접수, 검사진행, 완료 등) 확인.
+- API: `/server/result/get_request_date_combo.php`로 고객의 검사 접수일자 목록을 조회.
+- 접수일자 선택 시 `/server/result_preview.php`를 통해 단계별 진행상태(접수, 검사진행, 완료 등) 확인.
 
 ### 5.3. 결과지 뷰어 열람
 - 검사 결과 완료 시 결과지 열람 버튼이 활성화됩니다.
