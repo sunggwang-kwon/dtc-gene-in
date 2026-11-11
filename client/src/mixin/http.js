@@ -107,6 +107,7 @@ export default{
         alert(err.message);
         return null;
       });
+      if ( !res ) return null;
       if ( res.status == 200 ){
         return res;
       }

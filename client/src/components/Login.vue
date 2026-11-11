@@ -105,7 +105,7 @@ export default {
             patient_id: encodeURI(this.patient_id),
             patient_name: encodeURI(this.patient_name),
           };
-          this.$router.replace({ name: "Progress", query });
+          this.$router.replace({ name: "Progress", query }).catch(() => {});
         }
       }
     }

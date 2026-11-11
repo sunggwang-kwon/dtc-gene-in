@@ -12,6 +12,16 @@ function getProxyTarget() {
       return `http://${match[1]}`
     }
   }
+  try {
+    const { execSync } = require('child_process')
+    const secretHost = execSync('/home/sgkwon/scripts/get-gcp-secret.mjs DTC_GENE_SFTP_HOST', { encoding: 'utf-8', stdio: ['ignore', 'pipe', 'ignore'] }).trim()
+    if (secretHost) {
+      const host = secretHost.split(':')[0]
+      return `http://${host}`
+    }
+  } catch (e) {
+    // Secret Manager 미연동 환경 폴백
+  }
   return 'http://localhost'
 }
 

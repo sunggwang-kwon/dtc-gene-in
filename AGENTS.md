@@ -168,20 +168,19 @@ dtc-gene-in/
 ### 5.1. 인증 및 세션 관리
 - **로그인 (`Login.vue`)**:
   - 입력값: 바코드 번호(`patient_id`) + 고객 성명(`patient_name`)
-  - API: `/server/login.php` (POST)
+  - API: `/lookup/server/login.php` (POST)
   - 성공 시 세션 저장(`jwt`, `Patient_id`, `Name`, `Auth`) 후 `/progress` 라우트로 이동.
 - **세션 유지 및 자동 로그아웃 (`App.vue`)**:
-  - 20분 주기로 토큰 재발급 API (`/server/common/reissuance_token.php`) 호출.
-  - 60분 동안 사용자 인터랙션(클릭) 부재 시 자동 로그아웃 처리.
+  - 20분 주기로 토큰 재발급 API (`/lookup/server/common/reissuance_token.php`) 호출.
+  - 60분 동안 사용자 인터랙션(클릭, 터치) 부재 시 자동 로그아웃 처리.
 
 ### 5.2. 접수일자 선택 및 진행상황 (`Progress.vue`)
-- API: `/server/result/get_request_date_combo.php`로 고객의 검사 접수일자 목록을 조회.
-- 접수일자 선택 시 `/server/result_preview.php`를 통해 단계별 진행상태(접수, 검사진행, 완료 등) 확인.
+- API: `/lookup/server/result/get_request_date_combo.php`로 고객의 검사 접수일자 목록을 조회.
+- 접수일자 선택 시 `/lookup/server/result_preview.php`를 통해 단계별 진행상태(접수, 검사진행, 완료 등) 확인.
 
 ### 5.3. 결과지 뷰어 열람
 - 검사 결과 완료 시 결과지 열람 버튼이 활성화됩니다.
-- 템플릿 버전(`template_version`)에 따라 분기:
-  - 템플릿 코드 `T003` 또는 버전 `v4`: `/lookup/v4/?data=...`
-  - 템플릿 코드 `T004` 이상 또는 최신 버전: `/lookup/v5/?data=...`
-  - 영문 검사지(`lang_cd === 'eng'`): `/lookup/eng/v1/?data=...`
+- 지니인사이트 차세대 통합 뷰어(`dtc-gene-in-view`) 단일 엔드포인트 연동:
+  - 뷰어 URL: `/view/?data=...`
+  - 뷰어 내부에서 payload(`template_version`)를 분석하여 해당 버전의 리포트를 자동 렌더링.
 - 브라우저 새 창/탭으로 결과지 뷰어를 안전하게 팝업 오픈합니다.

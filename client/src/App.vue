@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app dense color="#F0F5FE" :elevation="0">
       <v-row align="center" no-gutters>
-        <v-col cols="auto" class="d-flex align-center cursor-pointer" @click="$router.push('/')">
+        <v-col cols="auto" class="d-flex align-center cursor-pointer" @click="goHome">
           <span class="font-weight-bold text-subtitle-1" style="letter-spacing: 0.5px; color: #222222; user-select: none;">GeneInsight</span>
         </v-col>
         <v-spacer></v-spacer>
@@ -36,16 +36,15 @@ export default {
     interval: null,
     click_event: new Date().getTime(),
   }),
-  created: async function() {
-    window.addEventListener('click', function() {
-      this.click_event = new Date().getTime();
-    }.bind(this));
+  created: function() {
+    window.addEventListener('click', this.updateActivity);
+    window.addEventListener('touchstart', this.updateActivity, { passive: true });
 
     this.interval = setInterval(async () => {
       if (this.$session.has('jwt')) {
-        if (new Date().getTime() > this.click_event + 3600000) { // 60분간 클릭 이벤트 미발생 시 자동 로그아웃
+        if (new Date().getTime() > this.click_event + 3600000) { // 60분간 사용자 인터랙션 미발생 시 자동 로그아웃
           this.$session.destroy();
-          this.$router.replace({ name: "Login" });
+          this.$router.replace({ name: "Login" }).catch(() => {});
           alert(this.$t('app.autoLogout'));
           return;
         }
@@ -57,40 +56,46 @@ export default {
           }
         }).catch(err => {
           alert(err.message);
-          this.$session.destroy();
-          this.$router.replace({ name: "Login" });
-          return;
+          return null;
         });
-        if (res && res.status == 200) {
-          if (res.data.ret == '0000') {
-            this.$session.set('jwt', res.data.jwt);
-          } else {
-            this.$session.destroy();
-            this.$router.replace({ name: "Login" });
-            alert(this.$t('app.autoLogout'));
-            return;
-          }
+        if (res && res.status == 200 && res.data && res.data.ret == '0000') {
+          this.$session.set('jwt', res.data.jwt);
         } else {
           this.$session.destroy();
-          this.$router.replace({ name: "Login" });
+          this.$router.replace({ name: "Login" }).catch(() => {});
+          alert(this.$t('app.autoLogout'));
+          return;
         }
       }
     }, 1000 * 60 * 20); // 20분마다 토큰 갱신
   },
   beforeDestroy: function() {
-    window.removeEventListener('click', function() {
-      this.click_event = null;
-    });
+    window.removeEventListener('click', this.updateActivity);
+    window.removeEventListener('touchstart', this.updateActivity);
     if (this.interval) {
       clearInterval(this.interval);
     }
   },
   methods: {
+    updateActivity: function() {
+      this.click_event = new Date().getTime();
+    },
+    goHome: function() {
+      if (this.$session.has('jwt')) {
+        if (this.$route.name !== 'Progress') {
+          this.$router.push({ name: 'Progress' }).catch(() => {});
+        }
+      } else {
+        if (this.$route.name !== 'Login') {
+          this.$router.push({ name: 'Login' }).catch(() => {});
+        }
+      }
+    },
     logout: function() {
       let con = confirm(this.$t('app.logoutConfirm'));
       if (!con) return;
       this.$session.destroy();
-      this.$router.replace({ name: "Login" });
+      this.$router.replace({ name: "Login" }).catch(() => {});
     }
   },
 };

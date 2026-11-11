@@ -169,10 +169,10 @@ export default {
     request_date_list: [],
   }),
   created: async function() {
-    if (!this.$route.query.patient_id || !this.$route.query.patient_name) {
+    if (!this.$session.has('jwt') || !this.$route.query.patient_id || !this.$route.query.patient_name) {
       alert(this.$t('progress.invalidAccess'));
       this.$session.destroy();
-      this.$router.replace({ name: "Login" });
+      this.$router.replace({ name: "Login" }).catch(() => {});
       return;
     }
     this.patient_id = decodeURI(this.$route.query.patient_id);
@@ -184,29 +184,26 @@ export default {
   methods: {
     dateformat: function(str) {
       if (!str) return '';
-      let date = new Date(str);
-      let year = date.getFullYear();
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
+      // 타임존 왜곡 방지를 위해 YYYY-MM-DD 직접 파싱 우선 시도
+      let match = String(str).match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      let year, month, day;
+      if (match) {
+        year = match[1];
+        month = parseInt(match[2], 10);
+        day = match[3].length === 1 ? '0' + match[3] : match[3];
+      } else {
+        let date = new Date(str);
+        if (isNaN(date.getTime())) return str;
+        year = date.getFullYear();
+        month = date.getMonth() + 1;
+        day = date.getDate() < 10 ? '0' + date.getDate() : String(date.getDate());
+      }
       const isEng = this.$i18n.locale === 'eng';
       if (isEng) {
         const monthName = this.$t('common.monthNames.' + month) || month;
-        return monthName + ' ' + day + ', ' + year;
+        return monthName + ' ' + parseInt(day, 10) + ', ' + year;
       }
-      let res = "";
-      if (year) {
-        res += (year + this.$t('common.year'));
-      }
-      if (month) {
-        res += (' ' + month + this.$t('common.month'));
-      }
-      if (day) {
-        if (day < 10) {
-          day = '0' + day;
-        }
-        res += (' ' + day + this.$t('common.day'));
-      }
-      return res;
+      return year + this.$t('common.year') + ' ' + month + this.$t('common.month') + ' ' + day + this.$t('common.day');
     },
     print_result: async function() {
       if (this.request_date_list.length <= 0) return;
@@ -226,21 +223,14 @@ export default {
         template_version: this.template_version,
         expire: new Date().getTime() + 1800000 // expire time : now() + 30min
       };
-      let query_string = "?data=" + btoa(JSON.stringify(data));
+      // UTF-8 멀티바이트 안전한 Base64 인코딩
+      let jsonStr = JSON.stringify(data);
+      let query_string = "?data=" + btoa(unescape(encodeURIComponent(jsonStr)));
       const isDev = process.env.NODE_ENV === 'development';
       const baseUrl = isDev ? "http://localhost:8081" : window.location.origin;
 
-      if (this.template_version * 1 == 4) {
-        window.open(baseUrl + "/v4" + query_string, "_blank");
-      } else if (this.template_version * 1 == 6 || this.template_version * 1 == 8) {
-        window.open(baseUrl + "/v5" + query_string, "_blank");
-      } else if (this.template_version * 1 == 9) { // version 6
-        window.open(baseUrl + "/v6" + query_string, "_blank");
-      } else if (this.template_version * 1 == 7) { // 영문 version 1
-        window.open(baseUrl + "/eng/v1" + query_string, "_blank");
-      } else {
-        window.open(baseUrl + "/viewer" + query_string, "_blank");
-      }
+      // 차세대 통합 뷰어 (/view/) 단일 엔드포인트 호출
+      window.open(baseUrl + "/view/" + query_string, "_blank");
     },
     result_preview: async function() {
       let data = {

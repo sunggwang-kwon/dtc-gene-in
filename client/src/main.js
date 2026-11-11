@@ -16,7 +16,7 @@ Vue.config.productionTip = false
 Vue.prototype.lodash = lodash;
 
 //Vue.prototype.$rootUrl = "https://lims.hlscience.com"
-Vue.prototype.$lookupUrl = (process.env.NODE_ENV==='development')?"/lookup/proxy":""
+Vue.prototype.$lookupUrl = (process.env.NODE_ENV === 'development') ? "/lookup/proxy" : "/lookup"
 
 var sessionOption = {
   persist: false
